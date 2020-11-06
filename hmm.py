@@ -1,41 +1,27 @@
+import argparse
 import numpy as np
 import pandas as pd
 import math
 from nltk import word_tokenize
 from collections import defaultdict
-from utils import get_word_tag, assign_unk, preprocess
+from utils import get_word_tag, assign_unk, processing
 from build_vocabulary import build_vocab
 
 corpus_path = "WSJ_02-21.pos"
-
-with open(corpus_path, 'r') as f:
-    training_corpus = f.readlines()
-
-vocab = build_vocab(corpus_path)
-vocab2idx = {}
-
-
-for i, tok in enumerate(sorted(vocab)):
-    vocab2idx[tok] = i
-
-file1 = open("MyFile.txt", "w")  
-for word in vocab2idx.keys():
-    file1.write(word + '\n')
-file1.close()
-
-with open('MyFile.txt', 'r') as fin:
-    data = fin.read().splitlines(True)
-with open('MyFile.txt', 'w') as fout:
-    fout.writelines(data[1:])
-
-with open("MyFile.txt", 'r') as f:
-    voc_l = f.read().split('\n')
-vocab2idx = {} 
-
-# Get the index of the corresponding words. 
-for i, word in enumerate(sorted(voc_l)): 
-    vocab2idx[word] = i
+def training_data(corpus_path):
     
+    with open(corpus_path, 'r') as f:
+        training_corpus = f.readlines()
+    return training_corpus
+
+def build_vocab2idx(corpus_path):
+    vocab = build_vocab(corpus_path)
+    vocab2idx = {}
+
+    for i, tok in enumerate(sorted(vocab)):
+        vocab2idx[tok] = i
+    return vocab2idx
+
 def create_dictionaries(training_corpus, vocab2idx):
     emission_counts = defaultdict(int)
     transition_counts = defaultdict(int)
@@ -53,9 +39,6 @@ def create_dictionaries(training_corpus, vocab2idx):
 
     return emission_counts, transition_counts, tag_counts
 
-emission_counts, transition_counts, tag_counts = create_dictionaries(training_corpus, vocab2idx)
-
-states = sorted(tag_counts.keys())
  
 def create_transition_matrix(transition_counts, tag_counts, alpha):
     all_tags = sorted(tag_counts.keys())
@@ -80,8 +63,6 @@ def create_transition_matrix(transition_counts, tag_counts, alpha):
             A[i, j] = (count + alpha) / (count_prev_tag + alpha * num_tags)
 
     return A
-alpha = 0.001
-A = create_transition_matrix(transition_counts, tag_counts, alpha)
 
 def create_emission_matrix(emission_counts, tag_counts, vocab2idx, alpha):
     num_tags = len(tag_counts)
@@ -101,7 +82,6 @@ def create_emission_matrix(emission_counts, tag_counts, vocab2idx, alpha):
 
             B[i, j] = (count + alpha) / (count_tag + alpha * num_words)
     return B
-B = create_emission_matrix(emission_counts, tag_counts, list(vocab2idx), alpha)
 
 def initialize(A, B, tag_counts, vocab2idx, states, prep_tokens):
     num_tags = len(tag_counts)
@@ -116,9 +96,6 @@ def initialize(A, B, tag_counts, vocab2idx, states, prep_tokens):
             best_probs[i,0] = np.log(A[s_idx, i]) + np.log(B[i, vocab2idx[prep_tokens[0]]])
 
     return best_probs, best_paths
-
-
-
 
 def viterbi_forward(A, B, prep_tokens, best_probs, best_paths, vocab2idx):
     num_tags = best_probs.shape[0]
@@ -156,23 +133,3 @@ def viterbi_backward(best_probs, best_paths, states):
         z[i - 1] = best_paths[pos_tag_for_word_i,i]
         pred[i - 1] = states[z[i - 1]]
     return pred
-
-from nltk import word_tokenize
-sample = 'I love you so much. I love you standardize, county, haity.'
-sample = sample + ' #'
-tokens = word_tokenize(sample)
-prep_tokens = preprocess(vocab2idx, tokens)
-
-best_probs, best_paths = initialize(A, B, tag_counts, vocab2idx, states, prep_tokens)
-best_probs, best_paths = viterbi_forward(A, B, prep_tokens, best_probs, best_paths, vocab2idx)
-pred = viterbi_backward(best_probs, best_paths, states)
-
-print(prep_tokens)
-print(pred[:-1])
-
-
-
-
-
-
-

@@ -21,22 +21,21 @@ def get_word_tag(line, vocab):
         return word, tag
     return None
 
-def preprocess(tokens, vocab):
-    prep_tokens = []
-    for tok in tokens:
-        # end of sentence
-        if not tok.split():
-            tok = "--n--"
-            prep_tokens.append(tok)
+def processing(vocab, text):
+    prep_sentence = []
+    for word in text:
+        if not word.split():
+            word = "--n--"
+            prep_sentence.append(word)
             continue
-        elif tok.strip() not in vocab:
-            tok = assign_unk(tok)
-            prep_tokens.append(tok)
+        elif word.strip() not in vocab:
+            word = assign_unk(word)
+            prep_sentence.append(word)
             continue
         else:
-            prep_tokens.append(tok.strip())
-    assert(len(prep_tokens) == len(tokens))
-    return prep_tokens
+            prep_sentence.append(word.strip())
+    assert(len(prep_sentence) == len(text))
+    return prep_sentence
 
 def assign_unk(tok):
     # Digits

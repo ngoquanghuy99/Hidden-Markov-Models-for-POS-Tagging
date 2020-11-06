@@ -1,7 +1,7 @@
 ## Hidden Markov Models for Part of speech Tagging
-An implementation of Part of Speech Tagging task for English using Hidden Markov Models
-Created by @ngoquanghuy99
-Email: ngoquanghuy1999lp@gmail.com
+<p> An implementation of Part of Speech Tagging task for English using Hidden Markov Models </p>
+<p> Created by @ngoquanghuy99 </p>
+<p> Email: ngoquanghuy1999lp@gmail.com </p>
 ### Overview
 In this repo, i implemented Part-of-speech Tagging task using Hidden Markov Model and decoded by a dynamic programming algorithm named Viterbi.
 There are 2 tagged datasets collected from the Wall Street Journal (WSJ).

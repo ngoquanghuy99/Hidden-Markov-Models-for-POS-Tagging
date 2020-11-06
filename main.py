@@ -1,4 +1,9 @@
+import io
+import json
+import pickle
 import numpy as np
+from numpy import save
+from numpy import load
 import argparse
 from nltk import word_tokenize
 from hmm import build_vocab2idx, create_dictionaries, create_transition_matrix, create_emission_matrix, initialize, viterbi_forward, viterbi_backward
@@ -9,22 +14,19 @@ corpus_path = "WSJ_02-21.pos"
 alpha = 0.001
 
 def load_data():
-    
     vocab2idx = build_vocab2idx(corpus_path)
-  
-    prep_tokens = processing(vocab2idx, tokens)
+    f = open('vocab.pkl', 'wb')
+    pickle.dump(vocab2idx, f)
+    f.close()
+    
     training_corpus = training_data(corpus_path)
     emission_counts, transition_counts, tag_counts = create_dictionaries(training_corpus, vocab2idx)
     states = sorted(tag_counts.keys())
     alpha = 0.001
     A = create_transition_matrix(transition_counts, tag_counts, alpha)
     B = create_emission_matrix(emission_counts, tag_counts, list(vocab2idx), alpha)
+    save('A.npy', A)
+    save('B.npy', B)
 
-    best_probs, best_paths = initialize(A, B, tag_counts, vocab2idx, states, prep_tokens)
-    best_probs, best_paths = viterbi_forward(A, B, prep_tokens, best_probs, best_paths, vocab2idx)
-    pred = viterbi_backward(best_probs, best_paths, states)
-
-    res = []
-    for tok, tag in zip(prep_tokens[:-1], pred[:-1]):
-        res.append((tok, tag))
-    print(res)
+if __name__ == "__main__":
+    load_data()

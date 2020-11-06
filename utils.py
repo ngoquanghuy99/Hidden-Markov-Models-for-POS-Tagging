@@ -21,6 +21,32 @@ def get_word_tag(line, vocab):
         return word, tag
     return None
 
+def preprocess(vocab, tokens):
+    orig = []
+    prep = []
+    for cnt, word in enumerate(tokens):
+        if not word.split():
+            orig.append(word.strip())
+            word = "--n--"
+            prep.append(word)
+            continue
+
+        elif word.strip() not in vocab:
+            orig.append(word.strip())
+            word = assign_unk(word)
+            prep.append(word)
+            continue
+
+        else:
+            orig.append(word.strip())
+            prep.append(word.strip())
+
+    assert(len(orig) == len(tokens))
+    assert(len(prep) == len(tokens))
+
+    return orig, prep
+
+
 def processing(vocab, text):
     prep_sentence = []
     for word in text:

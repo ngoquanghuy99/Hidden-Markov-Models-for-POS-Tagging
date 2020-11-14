@@ -1,7 +1,7 @@
 ## Hidden Markov Models for Part of speech Tagging
 
 <p> An implementation of Part of Speech Tagging task for English using Hidden Markov Models. </p>
-<p> Created by @ngoquanghuy99 </p>
+<p> Created by Ngo Quang Huy @ngoquanghuy99 </p>
 <p> Email: ngoquanghuy1999lp@gmail.com </p>
 
 ### Overview

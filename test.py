@@ -13,7 +13,7 @@ alpha = 0.001
 
 def parse_argument():
     parser = argparse.ArgumentParser(description='Predict Part of Speech Tags')
-    parser.add_argument('--sent', help='A speech')
+    parser.add_argument('--sent', help='Enter your sentence.')
     return parser.parse_args()
 
 def predict():

@@ -33,4 +33,6 @@ They will all replace unknown words in both training set, testing set and vocabu
     
 Output:
 
-    $ [('My', 'PRP$'), ('heart', 'NN'), ('is', 'VBZ'), ('always', 'RB'), ('breaking', 'VBG'), ('for', 'IN'), ('the', 'DT'), ('ghosts', 'NNS'), ('that', 'WDT'), ('haunt', 'VBP'), ('this', 'DT'), ('room', 'NN'), ('.', '.')]
+    $ [('My', 'PRP$'), ('heart', 'NN'), ('is', 'VBZ'), ('always', 'RB'), ('breaking', 'VBG'),
+    ('for', 'IN'), ('the', 'DT'), ('ghosts', 'NNS'), ('that', 'WDT'), ('haunt', 'VBP'), 
+    ('this', 'DT'), ('room', 'NN'), ('.', '.')]

@@ -16,7 +16,7 @@ To improve accuracy, words that are not in the vocabulary are further analyzed t
 For example, the suffix 'ize' is a hint that the word is a verb, as in 'final-ize' or 'character-ize'.
 They will all replace unknown words in both training set, testing set and vocabulary.
 ### Results on testing set
-*accuracy*: 0.95 
+*accuracy*: 95.31%
 ## Getting started
 ### Install dependencies
 #### Requirements
